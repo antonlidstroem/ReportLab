@@ -17,9 +17,11 @@ var providers = new List<IReportProvider>
     new QuestPdfProvider(),
     new TextReportProvider(),
     new ClosedXMLProvider(),
-    new ShapeCrawlerProvider(),
-    new JsReportProvider()
-
+    new JsReportExecutiveProvider(),
+    new JsReportMinimalProvider(),
+    new JsReportDarkTechProvider(), // NY
+    new JsReportVintageProvider(),  // NY
+    new JsReportBauhausProvider()   // NY
 };
 
 while (true)
@@ -61,7 +63,7 @@ void RunExport(IReportProvider provider, ReportModel model)
 
     // 1. Skapa en dedikerad Export-mapp i projektet
     string projectRoot = Path.Combine(AppContext.BaseDirectory, "..", "..", "..");
-    string exportFolder = Path.Combine(projectRoot, "Exports");
+    string exportFolder = Path.Combine(projectRoot, "Exports", provider.Name);
 
     if (!Directory.Exists(exportFolder))
     {
