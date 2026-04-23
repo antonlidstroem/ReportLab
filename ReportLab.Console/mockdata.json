@@ -1,0 +1,68 @@
+{
+    "Title": "HR Skyddsrond: Region Mitt - 2026",
+    "Description": "Fullständig genomgång av arbetsmiljöfaktorer inklusive fysisk säkerhet, ergonomi och psykosocial hälsa.",
+    "Inspector": "Karin HR-specialist",
+    "Date": "2026-04-23",
+    "Stats": [
+        {
+            "Label": "Ljudnivå",
+            "Value": 3.2
+        },
+        {
+            "Label": "Belysning",
+            "Value": 4.5
+        },
+        {
+            "Label": "Temperatur",
+            "Value": 2.8
+        },
+        {
+            "Label": "Luftkvalitet",
+            "Value": 3.5
+        },
+        {
+            "Label": "Skrivbordsinställning",
+            "Value": 4.1
+        },
+        {
+            "Label": "Stolsergonomi",
+            "Value": 3.9
+        },
+        {
+            "Label": "Skärmhöjd",
+            "Value": 4.7
+        },
+        {
+            "Label": "Stressnivå",
+            "Value": 2.1
+        },
+        {
+            "Label": "Arbetsbelastning",
+            "Value": 2.5
+        },
+        {
+            "Label": "Återhämtning",
+            "Value": 3.2
+        },
+        {
+            "Label": "Ledarskap",
+            "Value": 4.8
+        },
+        {
+            "Label": "Teamdynamik",
+            "Value": 4.4
+        },
+        {
+            "Label": "Kommunikation",
+            "Value": 4.0
+        },
+        {
+            "Label": "Kränkande särbehandling",
+            "Value": 5.0
+        },
+        {
+            "Label": "Hot & Våld",
+            "Value": 4.9
+        }
+    ]
+}
