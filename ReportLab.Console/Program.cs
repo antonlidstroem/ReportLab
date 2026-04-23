@@ -4,6 +4,7 @@ using ReportLab.Console.Core;
 using ReportLab.Console.Providers.Text;
 using ReportLab.Console.Providers.QuestPDF;
 using ReportLab.Console.Providers;
+using ReportLab.Console.Providers.jsreport;
 
 // 1. Ladda data
 string jsonString = File.ReadAllText("mockdata.json");
@@ -16,8 +17,9 @@ var providers = new List<IReportProvider>
     new QuestPdfProvider(),
     new TextReportProvider(),
     new ClosedXMLProvider(),
-    new ShapeCrawlerProvider()
-    // Här fyller du på med Excel/jsreport senare
+    new ShapeCrawlerProvider(),
+    new JsReportProvider()
+
 };
 
 while (true)
@@ -81,8 +83,9 @@ void RunExport(IReportProvider provider, ReportModel model)
     string extension = provider.Name switch
     {
         "PlainText" => ".txt",
-        "Excel" => ".xlsx",     // Matchar ClosedXMLProvider.Name
-        "PowerPoint" => ".pptx", // Matchar ShapeCrawlerProvider.Name
+        "ClosedXML" => ".xlsx",
+        "PowerPoint (non operational" => ".pptx",
+        "jsreport" => ".pdf", 
         _ => ".pdf"
     };
     string fullPath = Path.Combine(exportFolder, fileName + extension);

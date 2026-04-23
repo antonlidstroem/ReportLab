@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="jsreport.Binary" Version="4.4.0" />
+    <PackageReference Include="jsreport.Local" Version="3.8.2" />
     <PackageReference Include="QuestPDF" Version="2026.2.4" />
     <PackageReference Include="ScottPlot" Version="5.1.58" />
     <PackageReference Include="ShapeCrawler" Version="0.79.1" />
