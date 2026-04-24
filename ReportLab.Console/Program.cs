@@ -14,6 +14,7 @@ var myData = JsonSerializer.Deserialize<ReportModel>(jsonString, options);
 // 2. Registrera tillgängliga providers
 var providers = new List<IReportProvider>
 {
+    new JsReportDesignerProvider(),
     new QuestPdfProvider(),
     new TextReportProvider(),
     new ClosedXMLProvider(),
@@ -61,54 +62,62 @@ void RunExport(IReportProvider provider, ReportModel model)
 {
     var sw = Stopwatch.StartNew();
 
-    // 1. Skapa en dedikerad Export-mapp i projektet
     string projectRoot = Path.Combine(AppContext.BaseDirectory, "..", "..", "..");
-    string exportFolder = Path.Combine(projectRoot, "Exports", provider.Name);
+
+    if (provider is JsReportDesignerProvider)
+    {
+        Console.WriteLine($"Startar {provider.Name}...");
+        provider.Export(model, ""); // FilePath behövs inte för designern
+        return;
+    }
+
+    // --- NY LOGIK FÖR GRUPPERING ---
+    // Om namnet börjar på "jsreport", lägg dem i en gemensam "jsreport"-mapp.
+    // Annars använd providerns namn som vanligt.
+    string folderName = provider.Name.StartsWith("jsreport") ? "jsreport" : provider.Name;
+    string exportFolder = Path.Combine(projectRoot, "Exports", folderName);
+    // -------------------------------
 
     if (!Directory.Exists(exportFolder))
     {
         Directory.CreateDirectory(exportFolder);
     }
 
-    // 2. Tvätta filnamnet (Ta bort : / \ * ? " < > | )
+    // Tvätta filnamnet
     string safeTitle = model.Title;
     foreach (char c in Path.GetInvalidFileNameChars())
     {
         safeTitle = safeTitle.Replace(c, '_');
     }
 
-    // 3. Bygg det slutgiltiga filnamnet
-    // 3. Bygg det slutgiltiga filnamnet
+    // Bygg filnamnet - vi behåller provider.Name i filnamnet så vi ser skillnad på stilarna
     string fileName = $"Export_{safeTitle}_{provider.Name}";
 
-    // VIKTIGT: Matcha mot provider.Name (Excel/PowerPoint), inte klassnamnet
     string extension = provider.Name switch
     {
         "PlainText" => ".txt",
-        "ClosedXML" => ".xlsx",
-        "PowerPoint (non operational" => ".pptx",
-        "jsreport" => ".pdf", 
+        "Excel" => ".xlsx", // ClosedXMLProvider Name är "Excel" i din kod
         _ => ".pdf"
     };
+
     string fullPath = Path.Combine(exportFolder, fileName + extension);
 
-    Console.Write($"Exporterar med {provider.Name}... ");
+    Console.Write($"Exporterar {provider.Name} till \\Exports\\{folderName}... ");
 
     try
     {
-        // Vi skickar nu den fullständiga sökvägen inkl. ändelse
         provider.Export(model, fullPath);
         sw.Stop();
 
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"KLAR ({sw.ElapsedMilliseconds} ms)");
         Console.ResetColor();
-        Console.WriteLine($"   Sparad i: \\Exports\\{fileName}{extension}");
     }
     catch (Exception ex)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine($"FEL: {ex.Message}");
+        Console.WriteLine($"\nFEL: {ex.Message}");
+        Console.ResetColor();
     }
-    Console.ResetColor();
 }
+

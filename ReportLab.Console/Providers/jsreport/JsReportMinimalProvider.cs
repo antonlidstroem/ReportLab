@@ -1,64 +1,65 @@
-using jsreport.Local;
-using jsreport.Binary;
-using jsreport.Types;
 using ReportLab.Console.Core;
-using System.Globalization;
-using System.Linq;
-using System.IO;
 
 namespace ReportLab.Console.Providers.jsreport;
 
-public class JsReportMinimalProvider : IReportProvider
+public class JsReportMinimalProvider : JsReportBaseProvider
 {
-    public string Name => "jsreport_Minimal";
+    public override string Name => "jsreport_Minimal";
 
-    public void Export(ReportModel model, string filePath)
+    protected override string GetHtmlTemplate(ReportModel model, string labelsJson, string valuesJson)
     {
-        var rs = new LocalReporting().UseBinary(JsReportBinary.GetBinary()).AsUtility().Create();
-        string labelsJson = string.Join(",", model.Stats.Select(s => $"\"{s.Label}\""));
-        string valuesJson = string.Join(",", model.Stats.Select(s => s.Value.ToString(CultureInfo.InvariantCulture)));
+        return $@"
+    <html>
+        <head>
+            <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100;300;600&display=swap' rel='stylesheet'>
+            <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+            <style>
+                body {{ font-family: 'Inter', sans-serif; padding: 100px; color: #000; background: #fff; line-height: 1.6; }}
+                .top-meta {{ display: flex; justify-content: space-between; font-size: 10px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 100px; }}
+                h1 {{ font-weight: 100; font-size: 80px; letter-spacing: -4px; margin: 0 0 40px 0; }}
+                .summary {{ font-size: 24px; font-weight: 300; max-width: 600px; margin-bottom: 80px; }}
+                .chart-full {{ width: 100%; height: 400px; margin-bottom: 80px; }}
+                .grid-stats {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; border-top: 1px solid #eee; padding-top: 40px; }}
+                .stat-item {{ font-size: 12px; }}
+                .stat-value {{ font-size: 24px; font-weight: 600; display: block; }}
+            </style>
+        </head>
+        <body>
+            <div class='top-meta'>
+                <span>{model.Date}</span>
+                <span>Report / 001</span>
+                <span>{model.Inspector}</span>
+            </div>
+            
+            <h1>{model.Title}</h1>
+            <div class='summary'>{model.Description}</div>
+            
+            <div class='chart-full'><canvas id='minimalChart'></canvas></div>
 
-        string htmlTemplate = $@"
-        <html>
-            <head>
-                <link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap' rel='stylesheet'>
-                <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-                <style>
-                    body {{ font-family: 'Inter', sans-serif; padding: 60px; color: #111; background: #fff; }}
-                    h1 {{ font-weight: 300; font-size: 42px; letter-spacing: -1px; margin-bottom: 10px; }}
-                    .divider {{ width: 50px; height: 2px; background: #000; margin-bottom: 50px; }}
-                    .chart-container {{ width: 100%; height: 300px; margin-bottom: 100px; }}
-                </style>
-            </head>
-            <body>
-                <h1>{model.Title}</h1>
-                <div class='divider'></div>
-                <p style='max-width: 500px;'>{model.Description}</p>
-                <div class='chart-container'><canvas id='minimalChart'></canvas></div>
-                <script>
-                    window.JSREPORT_CHROME_PDF_OPTIONS = {{ waitForJS: true }};
-                    new Chart(document.getElementById('minimalChart'), {{
-                        type: 'line',
-                        data: {{ labels: [{labelsJson}], datasets: [{{ data: [{valuesJson}], borderColor: '#000', fill: false }}] }},
-                        options: {{ animation: false }}
-                    }});
-                </script>
-            </body>
-        </html>";
+            <div class='grid-stats'>
+                {string.Join("", model.Stats.Take(6).Select(s => $@"
+                    <div class='stat-item'>
+                        <span class='stat-value'>{s.Value:F1}</span>
+                        {s.Label.ToUpper()}
+                    </div>"))}
+            </div>
 
-        // FIX: Ändrat från {{ }} till { }
-        var report = rs.RenderAsync(new RenderRequest
-        {
-            Template = new Template
-            {
-                Content = htmlTemplate,
-                Engine = Engine.None,
-                Recipe = Recipe.ChromePdf
-            }
-        }).GetAwaiter().GetResult();
-
-        string finalPath = filePath.EndsWith(".pdf") ? filePath : filePath + ".pdf";
-        using var fs = File.Create(finalPath);
-        report.Content.CopyTo(fs);
+            <script>
+                window.JSREPORT_CHROME_PDF_OPTIONS = {{ waitForJS: true }};
+                new Chart(document.getElementById('minimalChart'), {{
+                    type: 'line',
+                    data: {{ 
+                        labels: [{labelsJson}], 
+                        datasets: [{{ data: [{valuesJson}], borderColor: '#000', borderWidth: 1, pointRadius: 2, fill: true, backgroundColor: 'rgba(0,0,0,0.02)' }}] 
+                    }},
+                    options: {{ 
+                        animation: false,
+                        scales: {{ x: {{ display: false }}, y: {{ position: 'right', grid: {{ color: '#f5f5f5' }} }} }},
+                        plugins: {{ legend: {{ display: false }} }}
+                    }}
+                }});
+            </script>
+        </body>
+    </html>";
     }
 }
