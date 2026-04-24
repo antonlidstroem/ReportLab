@@ -1,10 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using ReportLab.Console.Core;
-using ReportLab.Console.Providers.Text;
-using ReportLab.Console.Providers.QuestPDF;
 using ReportLab.Console.Providers;
 using ReportLab.Console.Providers.jsreport;
+using ReportLab.Console.Providers.QuestPDF;
+using ReportLab.Console.Providers.Syncfusion;
+using ReportLab.Console.Providers.Text;
 
 // 1. Ladda data
 string jsonString = File.ReadAllText("mockdata.json");
@@ -15,14 +16,18 @@ var myData = JsonSerializer.Deserialize<ReportModel>(jsonString, options);
 var providers = new List<IReportProvider>
 {
     new JsReportDesignerProvider(),
+    new SyncfusionCorporateProvider(),
+    new SyncfusionDarkTechProvider(),
+    new SyncfusionExcelCorporateProvider(),
+    new SyncfusionPptExecutiveProvider(),  
     new QuestPdfProvider(),
     new TextReportProvider(),
     new ClosedXMLProvider(),
     new JsReportExecutiveProvider(),
     new JsReportMinimalProvider(),
-    new JsReportDarkTechProvider(), // NY
-    new JsReportVintageProvider(),  // NY
-    new JsReportBauhausProvider()   // NY
+    new JsReportDarkTechProvider(),
+    new JsReportVintageProvider(), 
+    new JsReportBauhausProvider()  
 };
 
 while (true)
@@ -71,10 +76,13 @@ void RunExport(IReportProvider provider, ReportModel model)
         return;
     }
 
-    // --- NY LOGIK FÖR GRUPPERING ---
-    // Om namnet börjar på "jsreport", lägg dem i en gemensam "jsreport"-mapp.
-    // Annars använd providerns namn som vanligt.
-    string folderName = provider.Name.StartsWith("jsreport") ? "jsreport" : provider.Name;
+    // --- LOGIK FÖR GRUPPERING ---
+    string folderName = provider.Name switch
+    {
+        var n when n.StartsWith("jsreport") => "jsreport",
+        var n when n.StartsWith("Syncfusion") => "Syncfusion",
+        _ => provider.Name
+    };
     string exportFolder = Path.Combine(projectRoot, "Exports", folderName);
     // -------------------------------
 
@@ -96,7 +104,9 @@ void RunExport(IReportProvider provider, ReportModel model)
     string extension = provider.Name switch
     {
         "PlainText" => ".txt",
-        "Excel" => ".xlsx", // ClosedXMLProvider Name är "Excel" i din kod
+        "Excel" => ".xlsx",
+        var n when n.Contains("Excel") => ".xlsx",
+        var n when n.Contains("PPT") => ".pptx",
         _ => ".pdf"
     };
 
