@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Systemmeddelande: Bold Reports & Kostnad</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f9;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            border-top: 5px solid #d32f2f;
+        }
+
+        h1 {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+
+        h2 {
+            color: #1a237e;
+            font-size: 1.2em;
+            margin-top: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #ffebee;
+            color: #c62828;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .price-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .price-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+            .price-card h3 {
+                margin: 0;
+                font-size: 1em;
+                color: #555;
+            }
+
+            .price-card .price {
+                font-size: 1.5em;
+                font-weight: bold;
+                color: #1a237e;
+                margin: 10px 0;
+            }
+
+            .price-card .unit {
+                font-size: 0.8em;
+                color: #777;
+            }
+
+        .community {
+            border: 2px solid #4caf50;
+            background: #f1f8e9;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status-badge">TEKNISK BLOCKERING & INFO</div>
+        <h1>Varför Bold Reports?</h1>
+
+        <p>Den interaktiva designern är pausad p.g.a. CDN-blockering, men här är en översikt av vad lösningen innebär och vad den kostar.</p>
+
+        <h2>Prismodell (Uppskattat 2026)</h2>
+        <div class="price-grid">
+            <div class="price-card community">
+                <h3>Community</h3>
+                <div class="price">0 kr</div>
+                <div class="unit">för små bolag*</div>
+                <p style="font-size: 0.75em;">Omsättning < $1M USD<br>Max 5 utvecklare</p>
+            </div>
+            <div class="price-card">
+                <h3>Embedded Standard</h3>
+                <div class="price">ca 5 500 kr</div>
+                <div class="unit">per månad</div>
+                <p style="font-size: 0.75em;">Obegränsat antal användare<br>1 utvecklare</p>
+            </div>
+            <div class="price-card">
+                <h3>Enterprise</h3>
+                <div class="price">ca 16 500 kr+</div>
+                <div class="unit">per månad</div>
+                <p style="font-size: 0.75em;">Full support<br>Obegränsat allt</p>
+            </div>
+        </div>
+
+        <h2>Vad tillför Bold Reports?</h2>
+        <ul>
+            <li><strong>WYSIWYG-designer:</strong> Slutanvändare kan själva flytta diagram och tabeller utan att en utvecklare behöver ändra koden.</li>
+            <li><strong>RDL-standard:</strong> Använder samma industristandard som Microsoft SQL Server Reporting Services (SSRS).</li>
+            <li><strong>Data-bindning:</strong> Koppla rapporter direkt mot SQL, JSON eller API med inbyggda guider för filtrering.</li>
+            <li><strong>Automatiserad export:</strong> Generera pixel-perfekta PDF-filer som ser likadana ut i webbläsaren som på papperet.</li>
+        </ul>
+
+        <div class="footer">
+            <i>*Syncfusion/Bold Reports erbjuder en "Community License" som är helt gratis för enskilda utvecklare och små företag. Detta är ofta den mest attraktiva vägen för mindre projekt eller Proof-of-Concepts.</i>
+        </div>
+    </div>
+</body>
+</html>

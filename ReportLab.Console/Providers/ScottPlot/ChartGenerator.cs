@@ -26,6 +26,6 @@ public static class ChartGenerator
         plot.HideGrid();
         plot.Title("Månatlig Försäljning", 24);
 
-        return plot.GetImageBytes(600, 400);
+        return plot.GetImageBytes(600, 400, global::ScottPlot.ImageFormat.Png);
     }
 }

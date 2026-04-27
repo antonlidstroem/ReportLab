@@ -1,0 +1,20 @@
+--- HR Skyddsrond: Region Mitt - 2026 ---
+
+Fullständig genomgång av arbetsmiljöfaktorer inklusive fysisk säkerhet, ergonomi och psykosocial hälsa.
+
+DATA:
+Ljudnivå: 3,2
+Belysning: 4,5
+Temperatur: 2,8
+Luftkvalitet: 3,5
+Skrivbordsinställning: 4,1
+Stolsergonomi: 3,9
+Skärmhöjd: 4,7
+Stressnivå: 2,1
+Arbetsbelastning: 2,5
+Återhämtning: 3,2
+Ledarskap: 4,8
+Teamdynamik: 4,4
+Kommunikation: 4
+Kränkande särbehandling: 5
+Hot & Våld: 4,9
