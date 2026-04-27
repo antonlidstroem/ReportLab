@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="ReportLab.Api/ReportLab.Api.csproj" Id="16760827-9df9-42bd-b006-0ed8fcda308a" />
   <Project Path="ReportLab.Console/ReportLab.Console.csproj" />
 </Solution>

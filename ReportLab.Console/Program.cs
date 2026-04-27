@@ -2,8 +2,11 @@
 using System.Text.Json;
 using ReportLab.Console.Core;
 using ReportLab.Console.Providers;
+using ReportLab.Console.Providers.FastReport;
 using ReportLab.Console.Providers.jsreport;
+using ReportLab.Console.Providers.PlayWright;
 using ReportLab.Console.Providers.QuestPDF;
+using ReportLab.Console.Providers.Stimulsoft;
 using ReportLab.Console.Providers.Syncfusion;
 using ReportLab.Console.Providers.Text;
 
@@ -11,6 +14,8 @@ using ReportLab.Console.Providers.Text;
 string jsonString = File.ReadAllText("mockdata.json");
 var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 var myData = JsonSerializer.Deserialize<ReportModel>(jsonString, options);
+
+
 
 // 2. Registrera tillgängliga providers
 var providers = new List<IReportProvider>
@@ -27,7 +32,12 @@ var providers = new List<IReportProvider>
     new JsReportMinimalProvider(),
     new JsReportDarkTechProvider(),
     new JsReportVintageProvider(), 
-    new JsReportBauhausProvider()  
+    new JsReportBauhausProvider(),
+    new PlaywrightProvider(),
+    new FastReportProvider(),
+    new StimulsoftProvider(),
+    new SyncfusionWebDesignerProvider()
+
 };
 
 while (true)
@@ -45,21 +55,35 @@ while (true)
     Console.WriteLine("A. Kör alla");
     Console.WriteLine("Q. Avsluta");
 
-    var input = Console.ReadKey(true).KeyChar.ToString().ToUpper();
+    Console.Write("\nVal: ");
+    string input = Console.ReadLine()?.Trim().ToUpper() ?? "";
 
     if (input == "Q") break;
 
     if (input == "A")
     {
         foreach (var p in providers) RunExport(p, myData!);
+
+        // Valfritt: Vänta 2 sekunder så man hinner se att alla blev klara
+        Thread.Sleep(2000);
     }
-    else if (int.TryParse(input, out int index) && index <= providers.Count)
+    else if (int.TryParse(input, out int choice) && choice >= 1 && choice <= providers.Count)
     {
-        RunExport(providers[index - 1], myData!);
+        RunExport(providers[choice - 1], myData!);
+
+        // Valfritt: Vänta 1 sekund så man hinner se bekräftelsen
+        Thread.Sleep(1000);
+    }
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Ogiltigt val.");
+        Console.ResetColor();
+        Thread.Sleep(1000);
     }
 
-    Console.WriteLine("\nTryck på valfri tangent för att återvända till menyn...");
-    Console.ReadKey();
+    // De gamla raderna för Console.ReadKey() är nu borttagna
+    // Loopen går nu direkt upp till Console.Clear()
 }
 
 // Metod för att köra export och mäta tid
