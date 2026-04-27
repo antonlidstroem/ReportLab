@@ -17,7 +17,7 @@ namespace ReportLab.Console.Providers.Syncfusion
             // 1. Här kan vi starta webbservern om den inte redan körs
             // (I ett enkelt scenario kör du den manuellt först)
 
-            string url = "http://localhost:7079/report-designer";
+            string url = "https://localhost:7079/report-designer.html";
 
             System.Console.WriteLine($"Öppnar Syncfusion Designer på {url}...");
 

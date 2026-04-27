@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="BoldReports.AspNet.Core" Version="13.1.29" />
     <PackageReference Include="BoldReports.Net.Core" Version="13.1.29" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.*" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="33.2.3" />
   </ItemGroup>
